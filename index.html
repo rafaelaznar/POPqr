@@ -801,12 +801,22 @@
             const textInput = document.getElementById("textInput");
             const qrContainer = document.getElementById("qrContainer");
             qrContainer.innerHTML = "";
-            new QRCode(qrContainer, {
-                text: textInput.value,
-                width: 400,
-                height: 400,
-                correctLevel : QRCode.CorrectLevel.H                
-            });            
+            // BUG: if textInput.length between 192 and 220 use correctLevel : QRCode.CorrectLevel.M
+            if (textInput.value.length >= 192 && textInput.value.length <= 220) {
+                new QRCode(qrContainer, {
+                    text: textInput.value,
+                    width: 400,
+                    height: 400,
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            } else {
+                new QRCode(qrContainer, {
+                    text: textInput.value,
+                    width: 400,
+                    height: 400,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
             textInput.disabled = true;
         }
 
